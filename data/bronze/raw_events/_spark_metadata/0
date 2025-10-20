@@ -1,0 +1,3 @@
+v1
+{"path":"file:///C:/Users/DIVIJ/PycharmProjects/cricPulse/data/bronze/raw_events/match_id=39/inning=Gujarat%2520Titans/part-00000-4c4d7c78-73d6-408f-ac19-95310fdb30e2.c000.snappy.parquet","size":8093,"isDir":false,"modificationTime":1760968135670,"blockReplication":1,"blockSize":33554432,"action":"add"}
+{"path":"file:///C:/Users/DIVIJ/PycharmProjects/cricPulse/data/bronze/raw_events/match_id=39/inning=Kolkata%2520Knight%2520Riders/part-00000-a99f1060-d469-4b82-93ab-796e1330d36f.c000.snappy.parquet","size":6536,"isDir":false,"modificationTime":1760968135716,"blockReplication":1,"blockSize":33554432,"action":"add"}

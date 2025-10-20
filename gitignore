@@ -1,0 +1,51 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+.venv/
+env/
+venv/
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# Logs & Checkpoints
+logs/
+checkpoints/
+*/__pycache__/
+*/logs/
+*.log
+*.out
+
+# Airflow
+airflow/logs/
+airflow/dags/__pycache__/
+airflow/plugins/__pycache__/
+airflow/airflow.db
+airflow/unittests.cfg
+
+# Spark Metadata
+data/bronze/raw_events/_spark_metadata/
+data/bronze/raw_events/.crc
+data/bronze/.crc
+data/bronze/*_SUCCESS
+
+# Docker
+*.pid
+*.tar
+*.sock
+*.tmp
+.env
+
+# System Files
+.DS_Store
+Thumbs.db
+
+# Misc
+*.csv
+*.zip
+*.gz

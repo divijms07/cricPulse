@@ -1,0 +1,24 @@
+# Core Big Data & Streaming
+pyspark==4.0.1
+delta-spark==4.0.0
+kafka-python==2.2.15
+
+# Dashboard & Visualization
+streamlit==1.50.0
+pandas==2.3.3
+numpy==2.3.4
+
+# Web Requests / Utility
+requests==2.32.3
+
+# Airflow (with provider constraints)
+apache-airflow==2.10.2
+apache-airflow-providers-common-sql==1.16.0
+apache-airflow-providers-sqlite==3.9.0
+apache-airflow-providers-http==4.13.0
+apache-airflow-providers-smtp==1.8.0
+
+# Optional: for development / monitoring
+psutil==6.0.0
+watchdog==6.0.0
+rich==13.8.1
