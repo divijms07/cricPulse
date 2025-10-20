@@ -112,8 +112,3 @@ You’ll see computed metrics written to `/data/bronze/raw_events/` and streamin
 - Build a **Streamlit dashboard** for live match insights  
 
 ---
-
-## 🧑‍💻 Author
-**Divij Sarkale**  
-🎯 Big Data & Real-Time Systems Enthusiast  
-📬 [Connect on LinkedIn](https://linkedin.com/in/divij-sarkale)
