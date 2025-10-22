@@ -7,7 +7,6 @@ SILVER_PATH = '../data/silver/cleaned_events/'
 # ---------------------
 
 # Initialize Spark session
-# NOTE: Using Spark 4.0.1 and setting driver host for Windows compatibility
 spark = SparkSession.builder \
     .appName("CricketPulseBronzeToSilverETL") \
     .master("local[*]") \
@@ -26,9 +25,9 @@ df_silver = df_bronze.select(
     # Core IDs and Inning
     col("match_id").cast("string"),
     col("inning").cast("string"),
-    col("team").alias("batting_team"), # Rename for clarity
+    col("team").alias("batting_team"), 
     
-    # Event Details (Casting to correct type)
+    # Event Details
     col("over").cast("integer"),
     col("ball").cast("integer"),
     col("event_time").cast("timestamp"),
@@ -38,21 +37,23 @@ df_silver = df_bronze.select(
     col("bowler"),
     col("non_striker"),
     
-    # Runs and Extras (Coalesce used for safety against potential nulls in run fields)
+    # Runs and Extras
     coalesce(col("runs_total"), lit(0)).cast("integer").alias("total_runs"),
     coalesce(col("runs_batter"), lit(0)).cast("integer").alias("batter_runs"),
     
-    # Derive new metric: is_legal_delivery (Crucial for metrics like Economy/Run Rate)
+    # Derive new metric: is_legal_delivery
     when((col("extras_wides").cast("integer") == 0) & (col("extras_no_balls").cast("integer") == 0), lit(1))
         .otherwise(lit(0))
         .alias("is_legal_delivery"),
 
-    # Derive new metric: is_wicket
-    # *** CORRECTION: Replaced incorrect df_bronze.isin() logic. ***
-    # Since 'wickets' were not fully flattened from the Kafka stream, we use a placeholder.
-    # Proper wicket logic requires a more complex JSON parser in the streaming consumer first.
-    lit(0).alias("is_wicket") 
-
+    # Derive new metric: is_wicket (Placeholder)
+    lit(0).alias("is_wicket"),
+    
+    # --- NEW INSIGHT: POWERPLAY PHASE CLASSIFICATION ---
+    when(col("over") < lit(6), lit("Powerplay"))
+        .when((col("over") >= lit(6)) & (col("over") < lit(16)), lit("Middle Overs"))
+        .otherwise(lit("Death Overs"))
+        .alias("match_phase")
 )
 
 print(f"Writing cleaned data to SILVER layer: {SILVER_PATH}")
@@ -65,5 +66,5 @@ df_silver.write \
 
 print("Bronze to Silver ETL Batch Job Complete.")
 
-# Stop Spark Session
 spark.stop()
+

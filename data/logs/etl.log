@@ -1,0 +1,75 @@
+SparkSession available as 'spark'.
+Ctrl click to launch VS Code Native REPL
+>>> from pyspark.sql.functions import col, asc, desc
+>>> from pyspark.sql.types import StructType, StructField, StringType, DoubleType, BooleanType
+>>> DASHBOARD_PATH = 'C:/Users/DIVIJ/PycharmProjects/cricPulse/data/dashboard_ready'
+>>> SILVER_PATH = 'C:/Users/DIVIJ/PycharmProjects/cricPulse/data/silver/cleaned_events'
+>>> ANOMALY_SCHEMA = StructType([    StructField("metric_type", StringType(), True),    StructField("player_name", StringType(), True),    StructField("strike_rate", DoubleType(), True),    StructField("sr_z_score", DoubleType(), True),    StructField("economy_rate", DoubleType(), True),    StructField("econ_z_score", DoubleType(), True),    StructField("is_anomaly", BooleanType(), True),    StructField("z_score_threshold", DoubleType(), True)])
+>>> print("\n--- 1. GOLD ARTIFACT: TOP 5 BATSMEN ---")
+
+--- 1. GOLD ARTIFACT: TOP 5 BATSMEN ---
+>>> df_top_batsmen = spark.read.json(f"{DASHBOARD_PATH}/top_batsmen")
+>>> df_top_batsmen.show(5, False)
++-----------+--------+-----------+-----------+----------+
+|balls_faced|match_id|player_name|strike_rate|total_runs|
++-----------+--------+-----------+-----------+----------+
+|23         |67      |D Brevis   |247.83     |57        |
+|18         |67      |A Mhatre   |188.89     |34        |
+|20         |67      |Urvil Patel|185.0      |37        |
+|37         |67      |DP Conway  |140.54     |52        |
+|10         |67      |R Tewatia  |140.0      |14        |
++-----------+--------+-----------+-----------+----------+
+
+>>> print("\n--- 2. GOLD ARTIFACT: TOP 5 BOWLERS ---")
+
+--- 2. GOLD ARTIFACT: TOP 5 BOWLERS ---
+>>> df_top_bowlers = spark.read.json(f"{DASHBOARD_PATH}/top_bowlers")
+>>> df_top_bowlers.show(5, False)
++------------+------------------+--------+------------+-----------------+-------------+
+|economy_rate|legal_balls_bowled|match_id|overs_bowled|player_name      |runs_conceded|
++------------+------------------+--------+------------+-----------------+-------------+
+|5.2         |15                |67      |2.3         |A Kamboj         |13           |
+|5.5         |24                |67      |4.0         |Noor Ahmad       |22           |
+|5.67        |18                |67      |3.0         |RA Jadeja        |17           |
+|6.0         |18                |67      |3.0         |KK Ahmed         |18           |
+|6.75        |24                |67      |4.0         |M Prasidh Krishna|27           |
++------------+------------------+--------+------------+-----------------+-------------+
+
+>>> print("\n--- 3. GOLD ARTIFACT: PHASE SUMMARY ---")
+
+--- 3. GOLD ARTIFACT: PHASE SUMMARY ---
+>>> df_phase_summary = spark.read.json(f"{DASHBOARD_PATH}/phase_summary")
+>>> df_phase_summary.sort(asc("batting_team"), asc("match_phase")).show(10, False)
++-------------------+--------+------------+-----------------+--------------+----------+------------------+
+|batting_team       |match_id|match_phase |phase_legal_balls|phase_run_rate|phase_runs|phase_wickets_lost|
++-------------------+--------+------------+-----------------+--------------+----------+------------------+
+|Chennai Super Kings|67      |Death Overs |24               |14.25         |57        |0                 |
+|Chennai Super Kings|67      |Middle Overs|60               |10.5          |105       |0                 |
+|Chennai Super Kings|67      |Powerplay   |36               |11.33         |68        |0                 |
+|Gujarat Titans     |67      |Death Overs |15               |8.0           |20        |0                 |
+|Gujarat Titans     |67      |Middle Overs|60               |9.2           |92        |0                 |
+|Gujarat Titans     |67      |Powerplay   |36               |5.83          |35        |0                 |
++-------------------+--------+------------+-----------------+--------------+----------+------------------+
+
+>>> print("\n--- 4. GOLD ARTIFACT: ANOMALY ALERTS ---")
+
+--- 4. GOLD ARTIFACT: ANOMALY ALERTS ---
+>>> df_anomalies = spark.read.schema(ANOMALY_SCHEMA).json(f"{DASHBOARD_PATH}/anomalies")
+>>> df_anomalies.show(truncate=False)
++-----------+-----------+-----------+----------+------------+------------+----------+-----------------+
+|metric_type|player_name|strike_rate|sr_z_score|economy_rate|econ_z_score|is_anomaly|z_score_threshold|
++-----------+-----------+-----------+----------+------------+------------+----------+-----------------+
++-----------+-----------+-----------+----------+------------+------------+----------+-----------------+
+
+>>> print("\n--- 5. SILVER LAYER CHECK: Match Phase Distribution ---")
+
+--- 5. SILVER LAYER CHECK: Match Phase Distribution ---
+>>> df_silver_phase = spark.read.parquet(SILVER_PATH)
+>>> df_silver_phase.groupBy("match_phase").count().show()
++------------+-----+
+| match_phase|count|
++------------+-----+
+|   Powerplay|   77|
+|Middle Overs|  123|
+| Death Overs|   42|
++------------+-----+
