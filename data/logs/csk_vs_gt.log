@@ -1,0 +1,33 @@
+>>> SILVER_PATH = 'C:/Users/DIVIJ/PycharmProjects/cricPulse/data/silver/cleaned_events'
+>>> df_silver = spark.read.parquet(SILVER_PATH)
+>>> print("--- Silver Layer Schema ---")
+--- Silver Layer Schema ---
+>>> df_silver.printSchema()
+root
+ |-- inning: string (nullable = true)
+ |-- over: integer (nullable = true)
+ |-- ball: integer (nullable = true)
+ |-- event_time: timestamp (nullable = true)
+ |-- striker: string (nullable = true)
+ |-- bowler: string (nullable = true)
+ |-- non_striker: string (nullable = true)
+ |-- total_runs: integer (nullable = true)
+ |-- batter_runs: integer (nullable = true)
+ |-- is_legal_delivery: integer (nullable = true)
+ |-- is_wicket: integer (nullable = true)
+ |-- match_id: integer (nullable = true)
+ |-- batting_team: string (nullable = true)
+
+>>> print("--- Silver Layer Data Sample ---")
+--- Silver Layer Data Sample ---
+>>> df_silver.show(5, False)
++-------------------+----+----+-----------------------+--------+--------------+-----------+----------+-----------+-----------------+---------+--------+-------------------+
+|inning             |over|ball|event_time             |striker |bowler        |non_striker|total_runs|batter_runs|is_legal_delivery|is_wicket|match_id|batting_team       |
++-------------------+----+----+-----------------------+--------+--------------+-----------+----------+-----------+-----------------+---------+--------+-------------------+
+|Chennai Super Kings|0   |1   |2025-10-22 13:32:42.045|A Mhatre|Mohammed Siraj|DP Conway  |0         |0          |1                |0        |67      |Chennai Super Kings|
+|Chennai Super Kings|0   |2   |2025-10-22 13:32:43.047|A Mhatre|Mohammed Siraj|DP Conway  |0         |0          |1                |0        |67      |Chennai Super Kings|
+|Chennai Super Kings|0   |3   |2025-10-22 13:32:44.05 |A Mhatre|Mohammed Siraj|DP Conway  |0         |0          |1                |0        |67      |Chennai Super Kings|
+|Chennai Super Kings|0   |4   |2025-10-22 13:32:45.052|A Mhatre|Mohammed Siraj|DP Conway  |1         |0          |0                |0        |67      |Chennai Super Kings|
+|Chennai Super Kings|0   |5   |2025-10-22 13:32:46.054|A Mhatre|Mohammed Siraj|DP Conway  |4         |4          |1                |0        |67      |Chennai Super Kings|
++-------------------+----+----+-----------------------+--------+--------------+-----------+----------+-----------+-----------------+---------+--------+-------------------+
+only showing top 5 rows
