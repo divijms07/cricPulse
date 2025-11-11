@@ -52,7 +52,7 @@ CricPulse/
 ✅ Spark computation of:
 - Batsman Strike Rate  
 - Bowler Economy  
-- Team Run Rate  
+- Team Run Rate 
 ✅ PostgreSQL backend for Airflow (via Docker Compose)
 
 ---
