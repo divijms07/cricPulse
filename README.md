@@ -49,11 +49,11 @@ CricPulse/
 ✅ Real-time data ingestion from simulated cricket JSON feeds  
 ✅ Kafka-based streaming between producer and PySpark consumer  
 ✅ Airflow DAGs to orchestrate ingestion, processing, and anomaly detection  
+✅ PostgreSQL backend for Airflow (via Docker Compose)
 ✅ Spark computation of:
 - Batsman Strike Rate  
 - Bowler Economy  
 - Team Run Rate 
-✅ PostgreSQL backend for Airflow (via Docker Compose)
 
 ---
 
